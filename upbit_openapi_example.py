@@ -1,3 +1,5 @@
+# to print pretty json
+import json
 import jwt
 import hashlib
 import os
@@ -28,5 +30,10 @@ headers = {
 # Make the GET request to the /v1/accounts endpoint
 res = requests.get(server_url + '/v1/accounts', headers=headers)
 
-# Print the response in JSON format
-print(res.json())
+# Response 객체에서 JSON 데이터를 추출
+data = res.json()
+
+# 추출한 데이터를 JSON으로 직렬화 (예: 파일로 저장하거나, 보기 좋게 포맷팅할 때)
+#! print(json.dumps(data, indent=4, ensure_ascii=False)) - 오류 발생
+json_data = json.dumps(data, indent=4)
+print(json_data)
