@@ -35,12 +35,8 @@ def call_upbit_api(endpoint, params=None):
         url = f"{url}?{urlencode(params)}"
     
     try:
-        # API 호출
-        print(f"Making request to URL: {url}")  # 요청 URL을 출력하여 확인
         response = requests.get(url, headers=headers)
         
-        # 응답 상태 확인
-        print(f"Response Status Code: {response.status_code}")  # 상태 코드 확인
         if response.status_code == 200:
             data = response.json()
             return data
@@ -51,15 +47,28 @@ def call_upbit_api(endpoint, params=None):
         print(f"Request failed: {e}")  # 예외 메시지 출력
         return None
 
-# 예시로 /v1/accounts API 호출
+# call_upbit_api 함수를 사용하여 계정 정보 조회
 def get_account_info():
+    # 정보 조회를 위한 엔드포인트 설정
     endpoint = '/v1/accounts'
-    data = call_upbit_api(endpoint)
+    raw_data = call_upbit_api(endpoint)
     
-    # 응답 데이터 출력 (보기 좋게 JSON 형식으로 출력)
-    if data:
-        json_data = json.dumps(data, indent=4, ensure_ascii=False)
-        print(json_data)
+    # 응답 데이터 출력
+    if raw_data:
+        for data in raw_data:
+            print("-" * 40)
+            print(f"Currency: {data['currency']}")
+            
+            if data['currency'] == 'KRW':
+                print(f"Balance: ₩{float(data['balance']):,.0f}")
+            
+            if data['currency'] != 'KRW':
+                print(f"Balance: {data['balance']}")
+                # 평균 매수가를 ₩123,456 형태로 출력
+                print(f"Avg Buy Price: ₩{float(data['avg_buy_price']):,.0f}")
+                
+            print("-" * 40)
+            print()
     else:
         print("Failed to retrieve account info")
 
