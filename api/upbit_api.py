@@ -61,8 +61,7 @@ def get_account_info():
             
             if data['currency'] == 'KRW':
                 print(f"Balance: ₩{float(data['balance']):,.0f}")
-            
-            if data['currency'] != 'KRW':
+            else:
                 print(f"Balance: {data['balance']}")
                 # 평균 매수가를 ₩123,456 형태로 출력
                 print(f"Avg Buy Price: ₩{float(data['avg_buy_price']):,.0f}")
